@@ -1,0 +1,35 @@
+<md-content class="md-padding">
+  <md-button aria-label="imitate" ng-disabled="true">
+    {{ file }}
+  </md-button>
+
+  <md-menu>
+    <md-button aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
+      <md-icon aria-label="csv-files" class="material-icons" style="font-size: 24px;">subject</md-icon> pick file
+    </md-button>
+
+    <md-menu-content width="4">
+      <md-menu-item ng-repeat="filename in files">
+        <md-button ng-click="load(filename)"> <span md-menu-align-target>Option</span> {{filename}} </md-button>
+      </md-menu-item>
+    </md-menu-content>
+  </md-menu>
+
+  <md-button aria-label="columns-button" ng-click="slectColumns = !slectColumns">
+    <md-icon aria-label="columns" class="material-icons" style="font-size: 24px;">view_column</md-icon> Select Columns
+  </md-button>
+
+  <md-button aria-label="imitate" ng-click="imitate()">
+    <md-icon aria-label="csv-imitate" class="material-icons" style="font-size: 24px;">content_copy</md-icon> Imitate
+  </md-button>
+</md-content>
+
+<md-list ng-cloak ng-if="slectColumns">
+  <md-subheader class="md-no-sticky">Columns</md-subheader>
+  <md-list-item ng-repeat="column in columns">
+    <p> {{ column.name }} </p>
+    <md-checkbox class="md-secondary" ng-model="column.active"></md-checkbox>
+  </md-list-item>
+</md-list>
+
+<img ng-src="static/images/plot.png">

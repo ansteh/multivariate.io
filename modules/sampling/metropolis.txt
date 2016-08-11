@@ -1,0 +1,8 @@
+Wähle Startpunkt x0
+For i = 0 to N - 1:
+Sample u ~ U[0, 1]
+Sample x’ ~ q(x’ | xi)
+if u < A(xi, x’) = min { 1, ( p(x’)*q(xi-1 | x’) ) / ( p(xi)*q( x’ | xi-1 )) }
+ 		x(i+1) = x’
+	else
+		x(i+1) = xi
