@@ -17,7 +17,7 @@ import pylab
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-sns.set(color_codes=True)
+#sns.set(color_codes=True)
 plt.style.use('ggplot')
 
 class Imitator():
@@ -37,7 +37,6 @@ class Imitator():
         return pd.read_csv(os.path.join(os.path.dirname(__file__), "resources/"+self.filename), sep = ',')
 
     def get_data(self, names=None):
-        print 'columns columns columns columns ', names
         if(names is None):
             data = self.content
         else:
@@ -60,15 +59,15 @@ class Imitator():
         if(isSymmetric(C, self.threshold) and isPositiveDefinite(C)):
             return self.simulate_with_normal(size, columns)
         else:
+            #return self.simulate_with_normal(size, columns)
             return self.simulate_with_nonnormal(size, columns)
 
-    def plot(self, samples, columns=None):
+    def save_as_image(self, filename, samples, columns=None, selection=None, xlim=None, ylim=None):
         if(columns is None):
             df = pd.DataFrame(samples, columns=["x", "y"])
-            sns.jointplot(x="x", y="y", data=df)
+            sns.jointplot(x="x", y="y", data=df, kind="reg", xlim=xlim, ylim=ylim)
         else:
-            df = pd.DataFrame(samples, columns=[columns[0], columns[1]])
-            # sns.jointplot(x=names[0], y=names[1], data=df, xlim=xlim, ylim=ylim)
-            sns.jointplot(x=columns[0], y=columns[1], data=df)
+            df = pd.DataFrame(samples, columns=columns)
+            sns.jointplot(selection[0], selection[1], data=df, kind="reg", xlim=xlim, ylim=ylim)
 
-        pylab.savefig('static/images/plot.png')
+        pylab.savefig('static/images/'+filename+'.png')

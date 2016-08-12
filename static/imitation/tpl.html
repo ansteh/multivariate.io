@@ -1,4 +1,4 @@
-<md-content class="md-padding">
+<md-content class="md-padding" style="width: 650px; margin: auto;">
   <md-button aria-label="imitate" ng-disabled="true">
     {{ file }}
   </md-button>
@@ -10,7 +10,7 @@
 
     <md-menu-content width="4">
       <md-menu-item ng-repeat="filename in files">
-        <md-button ng-click="load(filename)"> <span md-menu-align-target>Option</span> {{filename}} </md-button>
+        <md-button ng-click="load(filename)"> {{filename}} </md-button>
       </md-menu-item>
     </md-menu-content>
   </md-menu>
@@ -28,8 +28,71 @@
   <md-subheader class="md-no-sticky">Columns</md-subheader>
   <md-list-item ng-repeat="column in columns">
     <p> {{ column.name }} </p>
-    <md-checkbox class="md-secondary" ng-model="column.active"></md-checkbox>
+    <md-checkbox aria-label="slect-column-{{ $index }}" class="md-secondary" ng-model="column.active" ng-click="updatePlotColumns()"></md-checkbox>
   </md-list-item>
 </md-list>
 
-<img ng-src="static/images/plot.png">
+<div layout="row" style="width: 400px; margin: auto;">
+
+  <md-menu flex>
+    <md-button aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
+      <md-icon aria-label="csv-files" class="material-icons" style="font-size: 24px;">filter_1</md-icon> Column - {{ plotColumns.x }}
+    </md-button>
+
+    <md-menu-content width="4">
+      <md-menu-item ng-repeat="column in getColumnsForPlot()">
+        <md-button ng-click="plotColumns.x = column.name"> {{ column.name }} </md-button>
+      </md-menu-item>
+    </md-menu-content>
+  </md-menu>
+
+  <md-menu flex>
+    <md-button aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
+      <md-icon aria-label="csv-files" class="material-icons" style="font-size: 24px;">filter_2</md-icon> Column - {{ plotColumns.y }}
+    </md-button>
+
+    <md-menu-content width="4">
+      <md-menu-item ng-repeat="column in getColumnsForPlot()">
+        <md-button ng-click="plotColumns.y = column.name"> {{ column.name }} </md-button>
+      </md-menu-item>
+    </md-menu-content>
+  </md-menu>
+
+</div>
+
+<!--<div>{{ plotColumns | json }}</div>-->
+
+<div layout="row">
+
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Real Data</span>
+      </md-card-title-text>
+    </md-card-title>
+    <img ng-src="static/images/csv_real_data.png?d={{ now }}" class="md-card-image" alt="Washed Out">
+    <!--<md-card-content>
+      <p>
+        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+      </p>
+    </md-card-content>-->
+  </md-card>
+
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Simulated Data</span>
+      </md-card-title-text>
+    </md-card-title>
+    <img ng-src="static/images/csv_simulated_data.png?d={{ now }}" class="md-card-image" alt="Washed Out">
+
+    <!--<md-card-content>
+      <p>
+        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+      </p>
+    </md-card-content>-->
+  </md-card>
+
+</div>

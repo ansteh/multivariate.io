@@ -48,9 +48,21 @@ def get_csv_data(json):
 
 @socketio.on('csv/imitate')
 def imitate(json):
+    size = 1000
     generator = generators.Imitator(json["filename"])
-    samples = generator.simulate(100, json["columns"])
-    generator.plot(samples[:, :2])
+    samples = generator.simulate(size, json["columns"])
+    real_data = generator.get_data(json["columns"]).T[:size]
+
+    x_index = np.where(np.array(json["columns"])==json['plotColumns'][0])[0][0]
+    y_index = np.where(np.array(json["columns"])==json['plotColumns'][1])[0][0]
+
+    print x_index, y_index
+
+    xlim = (min(np.min(real_data.T[x_index]), np.min(samples.T[x_index])), max(np.max(real_data.T[x_index]), np.max(samples.T[x_index])))
+    ylim = (min(np.min(real_data.T[y_index]), np.min(samples.T[y_index])), max(np.max(real_data.T[y_index]), np.max(samples.T[y_index])))
+
+    generator.save_as_image('csv_simulated_data', samples, json["columns"], json['plotColumns'], ylim=ylim, xlim=xlim)
+    generator.save_as_image('csv_real_data', real_data, json["columns"], json['plotColumns'], ylim=ylim, xlim=xlim)
     emit('csv/imitate', samples.tolist())
 
 @socketio.on('csv/imitate/normal')
