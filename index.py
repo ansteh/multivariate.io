@@ -63,7 +63,7 @@ def imitate(json):
 
     generator.save_as_image('csv_simulated_data', samples, json["columns"], json['plotColumns'], ylim=ylim, xlim=xlim)
     generator.save_as_image('csv_real_data', real_data, json["columns"], json['plotColumns'], ylim=ylim, xlim=xlim)
-    emit('csv/imitate', samples.tolist())
+    emit('csv/imitate', { "real_data_length": len(real_data.T[0]), "simulated": samples.tolist()})
 
 @socketio.on('csv/imitate/normal')
 def imitate_normal(json):

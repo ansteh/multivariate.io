@@ -9,6 +9,8 @@ app.directive('imitation', function(Socket){
       $scope.columns = [];
       $scope.slectColumns = false;
       $scope.data;
+      $scope.realDataLength;
+      $scope.simulatedDataLength;
 
       $scope.plotColumns = {};
 
@@ -39,7 +41,6 @@ app.directive('imitation', function(Socket){
 
       Socket.on('csv/data', function(response) {
         $scope.data = response.data;
-
         $scope.columns = _.map(response.columns, function(name) {
           return {
             active: true,
@@ -70,8 +71,10 @@ app.directive('imitation', function(Socket){
         $scope.$apply();
       });
 
-      Socket.on('csv/imitate', function(samples) {
-        console.log(samples);
+      Socket.on('csv/imitate', function(info) {
+        console.log(info);
+        $scope.realDataLength = _.get(info, 'real_data_length');
+        $scope.simulatedDataLength = info.simulated.length;
         $scope.now = getNow();
         $scope.$apply();
       });

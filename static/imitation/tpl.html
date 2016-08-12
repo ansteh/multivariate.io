@@ -67,7 +67,9 @@
   <md-card flex>
     <md-card-title>
       <md-card-title-text>
-        <span class="md-headline">Real Data</span>
+        <span ng-if="realDataLength" class="md-headline">Real Data ({{ realDataLength }} rows)</span>
+        <span ng-if="!realDataLength" class="md-headline">Real Data</span>
+
       </md-card-title-text>
     </md-card-title>
     <img ng-src="static/images/csv_real_data.png?d={{ now }}" class="md-card-image" alt="Washed Out">
@@ -82,7 +84,8 @@
   <md-card flex>
     <md-card-title>
       <md-card-title-text>
-        <span class="md-headline">Simulated Data</span>
+        <span ng-if="simulatedDataLength" class="md-headline">Simulated Data ({{ simulatedDataLength }} rows)</span>
+        <span ng-if="!simulatedDataLength" class="md-headline">Simulated Data</span>
       </md-card-title-text>
     </md-card-title>
     <img ng-src="static/images/csv_simulated_data.png?d={{ now }}" class="md-card-image" alt="Washed Out">
