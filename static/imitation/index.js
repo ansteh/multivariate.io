@@ -13,8 +13,12 @@ app.directive('imitation', function(Socket){
       $scope.simulatedDataLength;
 
       $scope.plotColumns = {};
+      $scope.collection = [];
 
       $scope.getActiveColumns = function() {
+        var column = _.find($scope.columns, { name: "Date"});
+        if(column) column.active = false;
+        // console.log($scope.columns);
         return _.filter($scope.columns, 'active');
       };
 
@@ -49,7 +53,6 @@ app.directive('imitation', function(Socket){
         });
 
         $scope.updatePlotColumns();
-
         $scope.$apply();
       });
 
@@ -72,7 +75,6 @@ app.directive('imitation', function(Socket){
       });
 
       Socket.on('csv/imitate', function(info) {
-        console.log(info);
         $scope.realDataLength = _.get(info, 'real_data_length');
         $scope.simulatedDataLength = info.simulated.length;
         $scope.now = getNow();
@@ -99,6 +101,40 @@ app.directive('imitation', function(Socket){
         };
 
         Socket.emit('csv/imitate', request);
+      };
+
+      Socket.on('csv/imitate/data', function(simulated) {
+        console.log(simulated);
+        var realDataColumnsIndices = _.map($scope.getActiveColumns(), function(colum) {
+          return _.findIndex($scope.columns, colum);
+        });
+        var data = _.map($scope.data, function(row) {
+          return _.map(realDataColumnsIndices, function(index) {
+            return row[index];
+          });
+        });
+
+        $scope.collection = _.map(_.take($scope.getActiveColumns(), 3), function(column, columnIndex) {
+          return {
+            title: column.name,
+            x_accessor: "x",
+            y_accessor: "y",
+            data: _.map(_.take(data, simulated.length), function(row, rowIndex) {
+              return { x: row[columnIndex], y: simulated[rowIndex][columnIndex] }
+            })
+          }
+        });
+        $scope.$apply();
+      });
+
+      $scope.fastImitate = function() {
+        var request = {
+          filename: $scope.file,
+          columns: getSelectedColumns(),
+          length: 500
+        };
+        console.log(request);
+        Socket.emit('csv/imitate/data', request);
       };
     }
   };

@@ -73,12 +73,6 @@
       </md-card-title-text>
     </md-card-title>
     <img ng-src="static/images/csv_real_data.png?d={{ now }}" class="md-card-image" alt="Washed Out">
-    <!--<md-card-content>
-      <p>
-        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
-        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
-      </p>
-    </md-card-content>-->
   </md-card>
 
   <md-card flex>
@@ -89,13 +83,21 @@
       </md-card-title-text>
     </md-card-title>
     <img ng-src="static/images/csv_simulated_data.png?d={{ now }}" class="md-card-image" alt="Washed Out">
-
-    <!--<md-card-content>
-      <p>
-        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
-        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
-      </p>
-    </md-card-content>-->
   </md-card>
-
 </div>
+
+<md-card flex>
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">Compare</span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-actions layout="row">
+    <md-button class="md-default md-raised" aria-label="update" ng-click="fastImitate()">
+      <md-icon aria-label="csv-files" class="material-icons" style="font-size: 24px;">update</md-icon>Refresh
+    </md-button>
+  </md-card-actions>
+  <md-card-content layout-align="space-between">
+    <compare columns="collection"></compare>
+  </md-card-content layout-align="space-between">
+</md-card>

@@ -68,14 +68,22 @@ def imitate(json):
 @socketio.on('csv/imitate/normal')
 def imitate_normal(json):
     generator = generators.Imitator(json["filename"])
-    samples = generator.simulate_with_normal(100, json["columns"])
+    samples = generator.simulate(json["length"], json["columns"])
     emit('csv/imitate/normal', samples.tolist())
 
 @socketio.on('csv/imitate/nonnormal')
 def imitate_nonnormal(json):
     generator = generators.Imitator(json["filename"])
-    samples = generator.simulate_with_nonnormal(100, json["columns"])
+    samples = generator.simulate_with_nonnormal(json["length"], json["columns"])
     emit('csv/imitate/nonnormal', samples.tolist())
+
+@socketio.on('csv/imitate/data')
+def imitate_data(json):
+    # generator = generators.Imitator(json["filename"])
+    # samples = generator.simulate_with_nonnormal(json["length"], json["columns"])
+    generator = generators.Imitator(json["filename"])
+    samples = generator.simulate(json["length"], json["columns"])
+    emit('csv/imitate/data', samples.tolist())
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=port, host=host)

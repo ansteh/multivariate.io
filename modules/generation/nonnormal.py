@@ -157,4 +157,4 @@ def simulate(data, factors=0, maxtrials=5, multiplier=1, seed=0):
     #return the simulated data set (step 14)
     #print 'RMSR', BestRMSR
 
-    return simulated
+    return np.flipud(simulated)
