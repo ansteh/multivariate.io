@@ -4,18 +4,9 @@ app.directive('jsonReplicator', function(Socket, $http, $location){
     templateUrl: 'static/json-replicator/index.tpl.html',
     scope: {},
     controller: function($scope) {
-      $scope.jsonStr = JSON.stringify([{
-        "address": {
-          "streetAddress": "21 2nd Street",
-          "city": "New York"
-        },
-        "phoneNumber": [
-          {
-            "location": "home",
-            "code": 44
-          }
-        ]
-      }]);
+      $scope.jsonStr = JSON.stringify(_.map(_.range(300, 400), function(index){
+        return { y: index, x: index+_.random(1000) };
+      }));
 
       var rootLocation = $location.protocol()+"://"+$location.host()+":"+$location.port();
 
@@ -31,19 +22,21 @@ app.directive('jsonReplicator', function(Socket, $http, $location){
 
       $scope.replicate = function() {
         var encodeURL = $location.protocol()+"://"+$location.host()+":2001/encode/replicate";
-        console.log($scope.json);
+        var decodeURL = $location.protocol()+"://"+$location.host()+":2001/decode/replicate";
+
         $http.post(encodeURL, {
           input: $scope.json
         })
         .then(function(response) {
-          console.log(response);
-          return response.data;
-        })
-        .then(function(data) {
-          return $http.post('/replicate/data', data);
+          return $http.post('/replicate/data', response.data);
         })
         .then(function(response) {
-          console.log(response);
+          return $http.post(decodeURL, {
+            input: response.data
+          });
+        })
+        .then(function(response) {
+          $scope.result = response.data;
         }, function(err) {
           console.log(err);
         })

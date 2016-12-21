@@ -91,8 +91,9 @@ def imitate_data(json):
 @app.route('/replicate/data', methods=['POST'])
 def replicate_data():
     data = request.json
-    nonnormal.simulate(np.array(np.asanyarray(data), dtype=np.float64))
-    return data
+    prepared = np.array(data, dtype=np.float64)
+    samples = nonnormal.simulate(prepared)
+    return json.dumps(samples.tolist(), separators=(',', ':'))
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=port, host=host)
