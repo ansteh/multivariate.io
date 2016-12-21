@@ -1,0 +1,11 @@
+<form>
+  <md-input-container class="md-block">
+    <label>Samples</label>
+    <textarea ng-model="jsonStr" rows="5" md-select-on-focus ng-change="updateJSON()"></textarea>
+  </md-input-container>
+  <md-button class="md-default md-raised" aria-label="update" ng-click="replicate()" ng-disabled="!json">
+    <md-icon aria-label="csv-files" class="material-icons" style="font-size: 24px;">content_copy</md-icon>Replicate
+  </md-button>
+  <!-- <pre>{{ json | json }}</pre> -->
+  <pre>{{ result | json }}</pre>
+</form>

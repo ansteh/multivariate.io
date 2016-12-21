@@ -13,6 +13,9 @@ from flask import Flask, url_for, render_template
 from flask import request
 from flask_socketio import SocketIO, send, emit
 import generators
+import generation.nonnormal as nonnormal
+import generation.normal as normal
+
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -84,6 +87,12 @@ def imitate_data(json):
     generator = generators.Imitator(json["filename"])
     samples = generator.simulate(json["length"], json["columns"])
     emit('csv/imitate/data', samples.tolist())
+
+@app.route('/replicate/data', methods=['POST'])
+def replicate_data():
+    data = request.json
+    nonnormal.simulate(np.array(np.asanyarray(data), dtype=np.float64))
+    return data
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=port, host=host)
