@@ -90,8 +90,8 @@ def imitate_data(json):
 
 @app.route('/replicate/data', methods=['POST'])
 def replicate_data():
-    data = request.json
-    prepared = np.array(data, dtype=np.float64)
+    body = request.json
+    prepared = np.array(body["data"], dtype=np.float64)
     samples = nonnormal.simulate(prepared)
     return json.dumps(samples.tolist(), separators=(',', ':'))
 

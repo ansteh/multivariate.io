@@ -28,7 +28,10 @@ app.directive('jsonReplicator', function(Socket, $http, $location){
           input: $scope.json
         })
         .then(function(response) {
-          return $http.post('/replicate/data', response.data);
+          return $http.post('/replicate/data', {
+            data: response.data,
+            size: 10
+          });
         })
         .then(function(response) {
           return $http.post(decodeURL, {
